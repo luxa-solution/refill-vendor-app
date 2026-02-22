@@ -1,0 +1,3 @@
+// Shared component placeholder — add reusable UI components here
+// e.g. Button, Input, Card, Badge, Modal, etc.
+export {};

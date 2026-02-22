@@ -1,0 +1,3 @@
+// Shared hooks placeholder — add cross-feature hooks here
+// e.g. useDebounce, usePagination, useLocalStorage, etc.
+export {};
