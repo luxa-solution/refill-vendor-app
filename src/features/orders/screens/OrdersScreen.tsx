@@ -8,11 +8,11 @@ import {
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import {OrderCard} from "../components/OrderCard";
-  import {EmptyState} from "../components/EmptyState";
+import OrderCard from "../components/OrderCard";
+import EmptyState from "../components/EmptyState";
 import { Order } from "../types";
 
-export const OrdersScreen = () => {
+const OrdersScreen = () => {
   const [available, setAvailable] = useState(true);
   const [activeTab, setActiveTab] = useState("New");
   const [showEarnings, setShowEarnings] = useState(false);
@@ -259,3 +259,4 @@ const styles = StyleSheet.create({
   },
 });
 
+export default OrdersScreen;

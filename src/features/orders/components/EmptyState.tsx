@@ -5,7 +5,7 @@ interface EmptyStateProps {
   tabName: string;
 }
 
-export const EmptyState = ({ tabName }: EmptyStateProps) => {
+ const EmptyState = ({ tabName }: EmptyStateProps) => {
   const getEmptyContent = () => {
     switch(tabName) {
       case "New":
@@ -75,3 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
+export default EmptyState;

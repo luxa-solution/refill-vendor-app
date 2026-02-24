@@ -7,7 +7,7 @@ interface OrderCardProps {
   order: Order;
 }
 
-const OrderCard = ({ order }: OrderCardProps) => {
+ const OrderCard = ({ order }: OrderCardProps) => {
   return (
     <View style={styles.orderCard}>
       {/* Price and View Details */}

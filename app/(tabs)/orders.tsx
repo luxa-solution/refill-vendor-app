@@ -1,3 +1,3 @@
-    import {OrdersScreen} from '@/src/features/orders/screens/OrdersScreen';
+    import OrdersScreen from '@/src/features/orders/screens/OrdersScreen';
 
 export default OrdersScreen;
