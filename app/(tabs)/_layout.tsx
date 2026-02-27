@@ -22,8 +22,7 @@ export default function TabLayout() {
         },
       }}
     >
-
-           <Tabs.Screen
+      <Tabs.Screen
         name="index"
         options={{
           href: null, 
@@ -61,6 +60,13 @@ export default function TabLayout() {
               }} 
             />
           ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="earning/history"
+        options={{
+          href: null, 
         }}
       />
 
