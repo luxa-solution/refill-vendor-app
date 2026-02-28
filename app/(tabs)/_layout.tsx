@@ -68,6 +68,13 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
+        name="earning/history"
+        options={{
+          href: null, 
+        }}
+      />
+
+      <Tabs.Screen
         name="vendor"
         options={{
           title: 'My Vendor',
