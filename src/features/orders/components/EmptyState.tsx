@@ -1,16 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import { colors } from '../../../theme/colors';
 
 interface EmptyStateProps {
   tabName: string;
 }
 
- const EmptyState = ({ tabName }: EmptyStateProps) => {
+const EmptyState = ({ tabName }: EmptyStateProps) => {
   const getEmptyContent = () => {
     switch(tabName) {
       case "New":
         return {
-          title: "No new order right now",
+          title: "No new orders right now",
           message: "Keep your gas vendor available. New orders will show up here as soon as customers place them."
         };
       case "Accepted":
@@ -39,39 +40,43 @@ interface EmptyStateProps {
   const { title, message } = getEmptyContent();
 
   return (
-    <View style={styles.empty}>
-      <Image 
-        source={require('../../../../assets/images/Group.png')} 
-        style={{ width: 100, height: 100, marginBottom: 12 }}
+    <View style={styles.container}>
+      <Image
+        source={require('../../../../assets/images/Group.png')}
+        style={styles.image}
         resizeMode="contain"
       />
-      <Text style={styles.emptyTitle}>{title}</Text>
-      <Text style={styles.emptyText}>{message}</Text>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.message}>{message}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  empty: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 20,
-    width: 358,
-    alignSelf: 'center',
+  container: {
+    alignItems: 'center',
+    padding: 40,
+    backgroundColor: colors.white,
+    borderRadius: 18,
   },
-  emptyTitle: {
+  image: {
+    width: 100,
+    height: 100,
+    marginBottom: 16,
+  },
+  title: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
+    color: colors.textDark,
     marginBottom: 8,
     textAlign: 'center',
-    color: "#1f2937",
   },
-  emptyText: {
-    textAlign: "center",
-    color: "#6b7280",
-    paddingHorizontal: 16,
+  message: {
+    color: colors.textGray,
+    textAlign: 'center',
+    lineHeight: 22,
     fontSize: 14,
-    lineHeight: 20,
+    paddingHorizontal: 16,
   },
 });
 

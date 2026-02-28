@@ -1,43 +1,65 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Order } from '../types';
+import { Order } from '../types/order.types';
+import { colors } from '../../../theme/colors';
 
 interface OrderCardProps {
   order: Order;
 }
 
- const OrderCard = ({ order }: OrderCardProps) => {
+const OrderCard = ({ order }: OrderCardProps) => {
+  const formatAmount = (amount?: number) => {
+    if (amount) return `₦${amount.toLocaleString()}`;
+    if ('price' in order) return order.price;
+    return '₦0';
+  };
+
+  const getDistance = () => {
+    if ('distance' in order) return order.distance;
+    return '1.3km';
+  };
+
+  const getTime = () => {
+    if ('time' in order) return order.time;
+    if (order.createdAt) {
+      return '5 min ago';
+    }
+    return 'Just now';
+  };
+
+  const getWeight = () => {
+    if ('weight' in order) return order.weight;
+    if (order.items && order.items.length > 0) {
+      return `${order.items[0].quantity * 12}kg`; 
+    }
+    return '12kg';
+  };
+
   return (
-    <View style={styles.orderCard}>
-      {/* Price and View Details */}
-      <View style={styles.orderHeader}>
-        <Text style={styles.price}>{order.price}</Text>
+    <View style={styles.card}>
+      <View style={styles.row}>
+        <Text style={styles.amount}>{formatAmount(order.totalAmount)}</Text>
         <TouchableOpacity style={styles.details}>
           <Text style={styles.detailsText}>View Details</Text>
-          <Ionicons name="chevron-down" size={16} color="#1e3a8a" />
+          <Ionicons name="chevron-down" size={18} color={colors.blue} />
         </TouchableOpacity>
       </View>
 
-      <View style={styles.metaRow}>
-
-        <View style={styles.metaItemLeft}>
-          <MaterialCommunityIcons name="motorbike" size={18} color="#1e3a8a" />
-          <Text style={styles.metaTextSecondary}>{order.distance}</Text>
+      <View style={styles.meta}>
+        <View style={styles.metaItem}>
+          <MaterialCommunityIcons name="motorbike" size={16} color={colors.blue} />
+          <Text style={styles.metaText}>{getDistance()}</Text>
         </View>
-
-        <View style={styles.metaItemCenter}>
-          <Text style={styles.dotStyle}>•</Text>
-          <View style={styles.metaItem}>
-            <Ionicons name="time-outline" size={18} color="#1e3a8a" />
-            <Text style={styles.metaTextSecondary}>{order.time}</Text>
-          </View>
-          <Text style={styles.dotStyle}>•</Text>
+        
+        <View style={styles.metaItem}>
+          <Ionicons name="time-outline" size={16} color={colors.blue} />
+          <Text style={styles.metaText}>{getTime()}</Text>
         </View>
-
-        <View style={styles.metaItemRight}>
-          <MaterialCommunityIcons name="gas-cylinder" size={18} color="#1e3a8a" />
-          <Text style={styles.metaTextSecondary}>{order.weight}</Text>
+        
+        <View style={styles.metaItem}>
+          <MaterialCommunityIcons name="gas-cylinder" size={16} color={colors.blue} />
+          <Text style={styles.metaText}>{getWeight()}</Text>
         </View>
       </View>
     </View>
@@ -45,76 +67,48 @@ interface OrderCardProps {
 };
 
 const styles = StyleSheet.create({
-  orderCard: {
-    backgroundColor: "#fff",
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
-    width: 358,
-    alignSelf: 'center',
+  card: {
+    backgroundColor: colors.primaryLight,
+    borderRadius: 18,
+    marginBottom: 16,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: colors.primary,
   },
-  orderHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 12,
-    gap: 4,
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  price: {
-    fontSize: 22,
-    fontWeight: "700",
+  amount: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: colors.textDark,
   },
   details: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   detailsText: {
-    color: "#1e3a8a",
-    fontWeight: "600",
+    color: colors.blue,
+    fontWeight: '600',
     fontSize: 14,
   },
-  metaRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: '100%',
-  },
-  metaItemLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    flex: 1,
-    justifyContent: 'flex-start',
-  },
-  metaItemCenter: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    flex: 1,
-    justifyContent: 'center',
-  },
-  metaItemRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    flex: 1,
-    justifyContent: 'flex-end',
+  meta: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 16,
   },
   metaItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
-  metaTextSecondary: {
-    color: "#1e3a8a",
-    fontSize: 15,
+  metaText: {
+    color: colors.textGray,
+    fontSize: 14,
     fontWeight: '500',
-  },
-  dotStyle: {
-    fontSize: 16,
-    color: "#1e3a8a",
-    marginHorizontal: 2,
   },
 });
 

@@ -21,4 +21,9 @@ export interface Order {
   riderName?: string;
   createdAt: string;
   updatedAt: string;
+  
+  price?: string;
+  distance?: string;
+  time?: string;
+  weight?: string;
 }
