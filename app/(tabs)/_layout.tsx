@@ -1,24 +1,26 @@
 import { Tabs } from 'expo-router';
-import { Image } from 'react-native';
+import { Image, View, StyleSheet } from 'react-native';
+import { colors } from '../../src/theme/colors';
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#fb923c', 
-        tabBarInactiveTintColor: '#6b7280', 
+        tabBarActiveTintColor: colors.primary, 
+        tabBarInactiveTintColor: colors.textGray, 
         tabBarStyle: {
           backgroundColor: '#ffffff',
           borderTopWidth: 1,
-          borderTopColor: '#e5e7eb',
-          paddingBottom: 5,
-          paddingTop: 5,
-          height: 60,
+          borderTopColor: colors.border,
+          paddingBottom: 8,
+          paddingTop: 8,
+          height: 70,
         },
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: '500',
+          marginTop: 4,
         },
       }}
     >
@@ -34,14 +36,15 @@ export default function TabLayout() {
         options={{
           title: 'Orders',
           tabBarIcon: ({ focused }) => (
-            <Image 
-              source={require('../../assets/images/orders-icon.png')} 
-              style={{ 
-                width: 24, 
-                height: 24,
-                tintColor: focused ? '#fb923c' : '#6b7280'
-              }} 
-            />
+            <View style={[styles.iconContainer, focused && styles.activeIconContainer]}>
+              <Image 
+                source={require('../../assets/images/package_2.png')} 
+                style={[
+                  styles.icon,
+                  { tintColor: focused ? colors.white : colors.textGray }
+                ]} 
+              />
+            </View>
           ),
         }}
       />
@@ -51,14 +54,15 @@ export default function TabLayout() {
         options={{
           title: 'Earnings',
           tabBarIcon: ({ focused }) => (
-            <Image 
-              source={require('../../assets/images/earning-icon.png')} 
-              style={{ 
-                width: 24, 
-                height: 24,
-                tintColor: focused ? '#fb923c' : '#6b7280'
-              }} 
-            />
+            <View style={[styles.iconContainer, focused && styles.activeIconContainer]}>
+              <Image 
+                source={require('../../assets/images/earning-icon.png')} 
+                style={[
+                  styles.icon,
+                  { tintColor: focused ? colors.white : colors.textGray }
+                ]} 
+              />
+            </View>
           ),
         }}
       />
@@ -75,17 +79,45 @@ export default function TabLayout() {
         options={{
           title: 'My Vendor',
           tabBarIcon: ({ focused }) => (
-            <Image 
-              source={require('../../assets/images/vendor-icon.png')} 
-              style={{ 
-                width: 24, 
-                height: 24,
-                tintColor: focused ? '#fb923c' : '#6b7280'
-              }} 
-            />
+            <View style={[styles.iconContainer, focused && styles.activeIconContainer]}>
+              <Image 
+                source={require('../../assets/images/vendor-icon.png')} 
+                style={[
+                  styles.icon,
+                  { tintColor: focused ? colors.white : colors.textGray }
+                ]} 
+              />
+            </View>
           ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="notifications"
+        options={{
+          href: null,
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  iconContainer: {
+    width: 40, 
+    height: 40, 
+    borderRadius: 12, 
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 4,
+  },
+  activeIconContainer: {
+    backgroundColor: colors.primary, 
+    borderRadius: 12, 
+  },
+  icon: {
+    width: 22, 
+    height: 22, 
+  },
+});
