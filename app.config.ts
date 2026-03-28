@@ -7,9 +7,9 @@ const PROJECT_SLUG = "refil-vendor-mobile";
 const OWNER = "luxa-digitals";
 
 const APP_NAME = "Refil Vendor";
-const SCHEME = "com.luxa.refil-vendor";
+const SCHEME = "com.luxa.refilvendor";
 
-const appIcons = {
+const appIcons = {                 
   lightBg: "#ffffff",
   darkBg: "#000000",
 } as const;
