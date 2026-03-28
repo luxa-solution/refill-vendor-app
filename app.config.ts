@@ -7,11 +7,11 @@ const PROJECT_SLUG = "refil-vendor-mobile";
 const OWNER = "luxa-digitals";
 
 const APP_NAME = "Refil Vendor";
-const SCHEME = "com.luxa.refil-vendor";
+const SCHEME = "com.luxa.refilvendor";
 
-const appIcons = {
-  lightBg: "#ffffff",
-  darkBg: "#000000",
+const appIcons = {                 
+  lightBg: "#F8810B",
+  darkBg: "#F8810B",
 } as const;
 
 const IOS_ICON = "./assets/appIcons/icon.png"; // Needs setup
@@ -24,9 +24,9 @@ const ADAPTIVE_ICON = {
 
 const SPLASH_ICON = {
   image: "./assets/appIcons/splash-icon.png",
-  bgColor: "#F8810B",
+  bgColor: appIcons.lightBg,
   darkImage: "./assets/appIcons/splash-icon.png",
-  darkBgColor: "#F8810B",
+  darkBgColor: appIcons.darkBg,
 };
 
 // Environment-specific overrides
@@ -72,7 +72,6 @@ export default ( { config }: ConfigContext ): ExpoConfig => {
     icon: IOS_ICON,
     scheme,
     userInterfaceStyle: "automatic",
-    newArchEnabled: true,
     platforms: [ "android", "ios" ],
     ios: {
       supportsTablet: false,

@@ -8,7 +8,6 @@
       "./types",
       "./node_modules/@types"
     ],
-    "jsx": "react-native",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
