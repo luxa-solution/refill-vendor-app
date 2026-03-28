@@ -84,11 +84,13 @@ export default ( { config }: ConfigContext ): ExpoConfig => {
         backgroundImage: ADAPTIVE_ICON.bgImage,
         monochromeImage: ADAPTIVE_ICON.mcImage,
       },
-      edgeToEdgeEnabled: true,
       package: scheme,
     },
     "plugins": [
       "expo-router",
+      "expo-font",
+      "expo-image",
+      "expo-web-browser",
       [
         "expo-splash-screen",
         {
