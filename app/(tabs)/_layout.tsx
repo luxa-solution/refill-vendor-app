@@ -1,16 +1,71 @@
-import { Tabs } from 'expo-router';
-import { Image, View, StyleSheet } from 'react-native';
-import { colors } from '../../src/theme/colors';
+import { useAuthStore } from "@/features/auth/store";
+import { useOnboardingStore } from "@/features/onboarding/store";
+import { Redirect, Tabs } from "expo-router";
+import { useEffect, useState } from "react";
+import { Image, StyleSheet, View } from "react-native";
+import { colors } from "../../src/theme/colors";
 
 export default function TabLayout() {
+  const hasOnboarded = useOnboardingStore((state) => state.hasOnboarded);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const vendorProfileComplete = useAuthStore(
+    (state) => state.vendorProfileComplete,
+  );
+  const [isHydrated, setIsHydrated] = useState(
+    useOnboardingStore.persist.hasHydrated() &&
+      useAuthStore.persist.hasHydrated(),
+  );
+
+  useEffect(() => {
+    const unsubOnboarding = useOnboardingStore.persist.onFinishHydration(() => {
+      if (useAuthStore.persist.hasHydrated()) {
+        setIsHydrated(true);
+      }
+    });
+
+    const unsubAuth = useAuthStore.persist.onFinishHydration(() => {
+      if (useOnboardingStore.persist.hasHydrated()) {
+        setIsHydrated(true);
+      }
+    });
+
+    if (
+      useOnboardingStore.persist.hasHydrated() &&
+      useAuthStore.persist.hasHydrated()
+    ) {
+      setIsHydrated(true);
+    }
+
+    return () => {
+      unsubOnboarding();
+      unsubAuth();
+    };
+  }, []);
+
+  if (!isHydrated) {
+    return null;
+  }
+
+  if (!hasOnboarded) {
+    return <Redirect href="/onboarding" />;
+  }
+
+  if (!isAuthenticated) {
+    return <Redirect href="/(auth)/login" />;
+  }
+
+  if (!vendorProfileComplete) {
+    return <Redirect href="/(auth)/vendor-account" />;
+  }
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.primary, 
-        tabBarInactiveTintColor: colors.textGray, 
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textGray,
         tabBarStyle: {
-          backgroundColor: '#ffffff',
+          backgroundColor: "#ffffff",
           borderTopWidth: 1,
           borderTopColor: colors.border,
           paddingBottom: 8,
@@ -19,7 +74,7 @@ export default function TabLayout() {
         },
         tabBarLabelStyle: {
           fontSize: 12,
-          fontWeight: '500',
+          fontWeight: "500",
           marginTop: 4,
         },
       }}
@@ -27,22 +82,27 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          href: null, 
+          href: null,
         }}
       />
 
       <Tabs.Screen
         name="orders"
         options={{
-          title: 'Orders',
+          title: "Orders",
           tabBarIcon: ({ focused }) => (
-            <View style={[styles.iconContainer, focused && styles.activeIconContainer]}>
-              <Image 
-                source={require('../../assets/images/package_2.png')} 
+            <View
+              style={[
+                styles.iconContainer,
+                focused && styles.activeIconContainer,
+              ]}
+            >
+              <Image
+                source={require("../../assets/images/package_2.png")}
                 style={[
                   styles.icon,
-                  { tintColor: focused ? colors.white : colors.textGray }
-                ]} 
+                  { tintColor: focused ? colors.white : colors.textGray },
+                ]}
               />
             </View>
           ),
@@ -52,15 +112,20 @@ export default function TabLayout() {
       <Tabs.Screen
         name="earning"
         options={{
-          title: 'Earnings',
+          title: "Earnings",
           tabBarIcon: ({ focused }) => (
-            <View style={[styles.iconContainer, focused && styles.activeIconContainer]}>
-              <Image 
-                source={require('../../assets/images/earning-icon.png')} 
+            <View
+              style={[
+                styles.iconContainer,
+                focused && styles.activeIconContainer,
+              ]}
+            >
+              <Image
+                source={require("../../assets/images/earning-icon.png")}
                 style={[
                   styles.icon,
-                  { tintColor: focused ? colors.white : colors.textGray }
-                ]} 
+                  { tintColor: focused ? colors.white : colors.textGray },
+                ]}
               />
             </View>
           ),
@@ -70,22 +135,27 @@ export default function TabLayout() {
       <Tabs.Screen
         name="earning/history"
         options={{
-          href: null, 
+          href: null,
         }}
       />
 
       <Tabs.Screen
         name="vendor"
         options={{
-          title: 'My Vendor',
+          title: "My Vendor",
           tabBarIcon: ({ focused }) => (
-            <View style={[styles.iconContainer, focused && styles.activeIconContainer]}>
-              <Image 
-                source={require('../../assets/images/vendor-icon.png')} 
+            <View
+              style={[
+                styles.iconContainer,
+                focused && styles.activeIconContainer,
+              ]}
+            >
+              <Image
+                source={require("../../assets/images/vendor-icon.png")}
                 style={[
                   styles.icon,
-                  { tintColor: focused ? colors.white : colors.textGray }
-                ]} 
+                  { tintColor: focused ? colors.white : colors.textGray },
+                ]}
               />
             </View>
           ),
@@ -104,20 +174,20 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   iconContainer: {
-    width: 40, 
-    height: 40, 
-    borderRadius: 12, 
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "transparent",
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 4,
   },
   activeIconContainer: {
-    backgroundColor: colors.primary, 
-    borderRadius: 12, 
+    backgroundColor: colors.primary,
+    borderRadius: 12,
   },
   icon: {
-    width: 22, 
-    height: 22, 
+    width: 22,
+    height: 22,
   },
 });

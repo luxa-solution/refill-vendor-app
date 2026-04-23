@@ -1,5 +1,5 @@
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { Link, useRouter } from "expo-router";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
     KeyboardAvoidingView,
@@ -13,11 +13,19 @@ import {
     View,
 } from "react-native";
 
+import { useAuthStore } from "@/features/auth/store";
 import { Button } from "@/shared/components";
 
 export default function LoginScreen() {
   const router = useRouter();
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const { phone } = useLocalSearchParams<{ phone?: string }>();
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
+  const vendorProfileComplete = useAuthStore(
+    (state) => state.vendorProfileComplete,
+  );
+  const [phoneNumber, setPhoneNumber] = useState(
+    typeof phone === "string" ? phone.replace(/\D/g, "").slice(0, 11) : "",
+  );
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -31,7 +39,10 @@ export default function LoginScreen() {
 
   const handleLogin = () => {
     if (!isFormValid) return;
-    router.replace("/(auth)/vendor-account");
+    setAuthenticated(true);
+    router.replace(
+      vendorProfileComplete ? "/(tabs)/orders" : "/(auth)/vendor-account",
+    );
   };
 
   return (
@@ -107,7 +118,7 @@ export default function LoginScreen() {
                 <Text style={styles.metaText}>Remember me</Text>
               </Pressable>
 
-              <Pressable>
+              <Pressable onPress={() => router.push("/(auth)/forgot-password")}>
                 <Text style={styles.metaText}>Forgot password</Text>
               </Pressable>
             </View>

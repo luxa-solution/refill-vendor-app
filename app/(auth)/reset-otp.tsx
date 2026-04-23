@@ -16,7 +16,7 @@ const OTP_DIGITS = 4;
 const OTP_TIMEOUT_SECONDS = 4 * 60 + 40;
 const MOCK_VALID_OTP = "1234";
 
-export default function OtpScreen() {
+export default function ResetOtpScreen() {
   const router = useRouter();
   const { phone } = useLocalSearchParams<{ phone?: string }>();
   const [code, setCode] = useState(["", "", "", ""]);
@@ -50,6 +50,7 @@ export default function OtpScreen() {
     const next = [...code];
     next[index] = digit;
     setCode(next);
+
     if (errorMessage) {
       setErrorMessage("");
     }
@@ -73,7 +74,7 @@ export default function OtpScreen() {
 
   const isCodeComplete = code.every((digit) => digit.length === 1);
 
-  const handleVerifyOtp = () => {
+  const handleVerifyCode = () => {
     if (!isCodeComplete) {
       setErrorMessage("Please enter all 4 digits.");
       return;
@@ -84,14 +85,13 @@ export default function OtpScreen() {
       return;
     }
 
-    const enteredCode = code.join("");
-    if (enteredCode !== MOCK_VALID_OTP) {
+    if (code.join("") !== MOCK_VALID_OTP) {
       setErrorMessage("Invalid code. Please try again.");
       return;
     }
 
     router.replace({
-      pathname: "/(auth)/login",
+      pathname: "/(auth)/new-password",
       params: { phone: phone && typeof phone === "string" ? phone : "" },
     });
   };
@@ -106,9 +106,9 @@ export default function OtpScreen() {
         <View style={styles.headerWrap}>
           <Ionicons name="flame" size={52} color="#F97316" />
           <Text style={styles.brand}>Refill</Text>
-          <Text style={styles.title}>Enter Four Digits Code</Text>
+          <Text style={styles.title}>Verify Reset Code</Text>
           <Text style={styles.subtitle}>
-            We&apos;ve texted you 4 digits code, input to proceed{maskedPhone}
+            We&apos;ve texted you 4 digits code, input to continue{maskedPhone}
           </Text>
         </View>
 
@@ -149,9 +149,9 @@ export default function OtpScreen() {
 
         <View style={styles.footerWrap}>
           <Button
-            title="Continue"
+            title="Verify Code"
             variant="filled"
-            onPress={handleVerifyOtp}
+            onPress={handleVerifyCode}
             disabled={!isCodeComplete}
             fullWidth
           />
