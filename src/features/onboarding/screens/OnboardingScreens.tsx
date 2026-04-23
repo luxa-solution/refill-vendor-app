@@ -54,8 +54,9 @@ export const OnboardingScreens = () => {
   }, []);
 
   const handleSkip = () => {
-    setHasOnboarded(true);
-    router.replace("/(tabs)" as Href);
+    if (isLast) return;
+    const finalIndex = total - 1;
+    flatListRef.current?.scrollToIndex({ index: finalIndex, animated: true });
   };
 
   const handleNext = () => {
@@ -66,12 +67,12 @@ export const OnboardingScreens = () => {
 
   const handleLogin = () => {
     setHasOnboarded(true);
-    router.replace("/(auth)/signup" as Href);
+    router.replace("/(auth)/login" as Href);
   };
 
   const handleCreateAccount = () => {
     setHasOnboarded(true);
-    router.replace("/(auth)/login" as Href);
+    router.replace("/(auth)/signup" as Href);
   };
 
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
@@ -117,14 +118,14 @@ export const OnboardingScreens = () => {
               <Button
                 title="Sign up"
                 variant="filled"
-                onPress={handleLogin}
+                onPress={handleCreateAccount}
                 fullWidth
               />
               <View style={styles.ctaSpacer} />
               <Button
                 title="Log in"
                 variant="outline"
-                onPress={handleCreateAccount}
+                onPress={handleLogin}
                 fullWidth
               />
             </View>

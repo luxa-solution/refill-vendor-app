@@ -2,24 +2,44 @@ import { Redirect } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 
+import { useAuthStore } from "@/features/auth/store";
 import { useOnboardingStore } from "@/features/onboarding/store";
 
 export default function RootIndex() {
   const hasOnboarded = useOnboardingStore((state) => state.hasOnboarded);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const vendorProfileComplete = useAuthStore(
+    (state) => state.vendorProfileComplete,
+  );
   const [isHydrated, setIsHydrated] = useState(
-    useOnboardingStore.persist.hasHydrated(),
+    useOnboardingStore.persist.hasHydrated() &&
+      useAuthStore.persist.hasHydrated(),
   );
 
   useEffect(() => {
-    const unsubscribe = useOnboardingStore.persist.onFinishHydration(() => {
-      setIsHydrated(true);
+    const unsubOnboarding = useOnboardingStore.persist.onFinishHydration(() => {
+      if (useAuthStore.persist.hasHydrated()) {
+        setIsHydrated(true);
+      }
     });
 
-    if (useOnboardingStore.persist.hasHydrated()) {
+    const unsubAuth = useAuthStore.persist.onFinishHydration(() => {
+      if (useOnboardingStore.persist.hasHydrated()) {
+        setIsHydrated(true);
+      }
+    });
+
+    if (
+      useOnboardingStore.persist.hasHydrated() &&
+      useAuthStore.persist.hasHydrated()
+    ) {
       setIsHydrated(true);
     }
 
-    return unsubscribe;
+    return () => {
+      unsubOnboarding();
+      unsubAuth();
+    };
   }, []);
 
   if (!isHydrated) {
@@ -38,6 +58,14 @@ export default function RootIndex() {
 
   if (!hasOnboarded) {
     return <Redirect href="/onboarding" />;
+  }
+
+  if (!isAuthenticated) {
+    return <Redirect href="/(auth)/login" />;
+  }
+
+  if (!vendorProfileComplete) {
+    return <Redirect href="/(auth)/vendor-account" />;
   }
 
   return <Redirect href="/(tabs)/orders" />;
