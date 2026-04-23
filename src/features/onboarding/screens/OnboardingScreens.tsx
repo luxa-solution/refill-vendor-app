@@ -66,12 +66,12 @@ export const OnboardingScreens = () => {
 
   const handleLogin = () => {
     setHasOnboarded(true);
-    router.replace("/(tabs)" as Href);
+    router.replace("/(auth)/signup" as Href);
   };
 
   const handleCreateAccount = () => {
     setHasOnboarded(true);
-    router.replace("/(tabs)" as Href);
+    router.replace("/(auth)/login" as Href);
   };
 
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
@@ -115,14 +115,14 @@ export const OnboardingScreens = () => {
             {/* CTA buttons — overlaid at the bottom */}
             <View style={styles.ctaBlock}>
               <Button
-                title="Login  to your account"
+                title="Sign up"
                 variant="filled"
                 onPress={handleLogin}
                 fullWidth
               />
               <View style={styles.ctaSpacer} />
               <Button
-                title="Create your vendor account"
+                title="Log in"
                 variant="outline"
                 onPress={handleCreateAccount}
                 fullWidth
